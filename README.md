@@ -53,7 +53,7 @@ By task type (same 128 tasks):
 
 | Recipe | What it shows |
 | --- | --- |
-| [00_quickstart/embed_and_score.py](cookbook/00_quickstart/embed_and_score.py) | A query with its instruction, a passage, their cosine similarity |
+| [00_quickstart/embed_and_score.py](cookbook/00_quickstart/embed_and_score.py) | A query with its instruction and five passages, ranked by cosine similarity |
 
 ```bash
 git clone https://github.com/cheon-ai-official/cheon-embedding
@@ -74,8 +74,15 @@ from cheon_embedding import CheonEmbedding
 embedding = CheonEmbedding()  # cheonai/cheon-embedding-0.6b-v1 on CUDA, MPS or CPU
 
 queries = embedding.embed_queries(["How do I renew my passport online?"])
-passages = embedding.embed_documents(["Passports can be renewed online through the government portal."])
+passages = embedding.embed_documents([
+    "A lost or stolen passport should be reported to the authority that issued it.",
+    "Passports can be renewed online through the government portal.",
+    "Water boils at 100 degrees Celsius at sea level.",
+    "여권 재발급은 정부 포털에서 온라인으로 신청할 수 있습니다.",
+    "Los pasaportes se pueden renovar en línea a través del portal del gobierno.",
+])
 scores = queries @ passages.T  # cosine similarity: the vectors are unit length
+print(scores.argsort(descending=True))  # tensor([[1, 4, 3, 0, 2]]): the three answers first, the boiling point last
 ```
 
 `embed_queries` writes each query after a one-line task instruction: web

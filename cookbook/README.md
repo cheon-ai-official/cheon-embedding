@@ -16,8 +16,8 @@ The first run downloads the model (2.4 GB).
 ## Where to Start
 
 **New to the model?** Start with [00_quickstart](./00_quickstart): embed a query
-and a passage and score them.
+and five passages and rank the passages for the query.
 
 | Folder | Recipe | What it shows |
 | --- | --- | --- |
-| [00_quickstart](./00_quickstart) | [`embed_and_score.py`](./00_quickstart/embed_and_score.py) | A query with its instruction, a passage, their cosine similarity |
+| [00_quickstart](./00_quickstart) | [`embed_and_score.py`](./00_quickstart/embed_and_score.py) | A query with its instruction and five passages, ranked by cosine similarity |

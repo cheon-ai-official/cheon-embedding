@@ -1,6 +1,6 @@
 import pytest
 import torch
-from conftest import DOCUMENT, QUERY
+from conftest import DOCUMENT, PASSAGES, QUERY, RANKING
 
 from cheon_embedding import WEB_SEARCH
 
@@ -20,6 +20,11 @@ def test_a_batch_keeps_the_input_order(embedding):
     together = embedding.embed_documents(texts)
     one_by_one = torch.cat([embedding.embed_documents([text]) for text in texts])
     assert torch.allclose(together, one_by_one, atol=1e-4)
+
+
+def test_the_card_example_ranks_the_answers_first(embedding):
+    scores = (embedding.embed_queries([QUERY]) @ embedding.embed_documents(PASSAGES).T)[0]
+    assert scores.argsort(descending=True).tolist() == RANKING
 
 
 def test_a_query_is_embedded_after_its_instruction(embedding):
