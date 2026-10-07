@@ -53,7 +53,7 @@ By task type (same 128 tasks):
 
 | Recipe | What it shows |
 | --- | --- |
-| [00_quickstart/embed_and_score.py](cookbook/00_quickstart/embed_and_score.py) | A query with its instruction and five passages, ranked by cosine similarity |
+| [00_quickstart/embed_and_score.py](cookbook/00_quickstart/embed_and_score.py) | A query with its instruction and eight passages in five languages, ranked by cosine similarity |
 
 ```bash
 git clone https://github.com/cheon-ai-official/cheon-embedding
@@ -75,14 +75,17 @@ embedding = CheonEmbedding()  # cheonai/cheon-embedding-0.6b-v1 on CUDA, MPS or 
 
 queries = embedding.embed_queries(["How do I renew my passport online?"])
 passages = embedding.embed_documents([
-    "A lost or stolen passport should be reported to the authority that issued it.",
+    "여권을 잃어버렸다면 바로 분실 신고를 해야 합니다.",
     "Passports can be renewed online through the government portal.",
-    "Water boils at 100 degrees Celsius at sea level.",
+    "富士山は日本で一番高い山です。",
     "여권 재발급은 정부 포털에서 온라인으로 신청할 수 있습니다.",
-    "Los pasaportes se pueden renovar en línea a través del portal del gobierno.",
+    "يمكن تجديد جواز السفر عبر الإنترنت من خلال البوابة الحكومية.",
+    "القاهرة هي عاصمة مصر.",
+    "护照可以通过政府门户网站在线申请换发。",
+    "パスポートの更新は、政府のポータルサイトからオンラインで申請できます。",
 ])
 scores = queries @ passages.T  # cosine similarity: the vectors are unit length
-print(scores.argsort(descending=True))  # tensor([[1, 4, 3, 0, 2]]): the three answers first, the boiling point last
+print(scores.argsort(descending=True))  # tensor([[1, 6, 4, 7, 3, 0, 5, 2]]): the five answers first, the unrelated two last
 ```
 
 `embed_queries` writes each query after a one-line task instruction: web
